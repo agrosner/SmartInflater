@@ -9,13 +9,12 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 
-import com.grosner.smartinflater.R;
-import com.grosner.smartinflater.exception.SResourceNotFoundException;
-import com.grosner.smartinflater.utils.MethodNames;
-import com.grosner.smartinflater.utils.ReflectionUtils;
 import com.grosner.smartinflater.annotation.SMethod;
 import com.grosner.smartinflater.annotation.SResource;
 import com.grosner.smartinflater.exception.MethodTypeMistmatchException;
+import com.grosner.smartinflater.exception.SResourceNotFoundException;
+import com.grosner.smartinflater.utils.MethodNames;
+import com.grosner.smartinflater.utils.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -80,9 +79,8 @@ public class SmartInflater {
                     try {
                         field.setAccessible(true);
                         field.set(inObject, found);
-                    } catch (IllegalAccessException e) {}
-                    catch (IllegalArgumentException i){}
-                } else{
+                    } catch (IllegalAccessException | IllegalArgumentException e) {}
+                } else if(!resource.optional()){
                     throw new SResourceNotFoundException(field.getName(), inObject.getClass());
                 }
             }
@@ -306,4 +304,19 @@ public class SmartInflater {
         return methodId;
     }
 
+    /**
+     * Destroys the views contained in the {@link com.grosner.smartinflater.view.ViewClassFieldMap}
+     * to release grip on the view objects to prevent memory leaks.
+     * @param inObject
+     */
+    public static void destroyViews(Object inObject){
+        List<Field> views = ViewClassFieldMap.getFieldMap(inObject);
+        for(Field field: views){
+            field.setAccessible(true);
+            try {
+                field.set(inObject, null);
+            } catch (IllegalAccessException e) {
+            }
+        }
+    }
 }
