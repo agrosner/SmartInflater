@@ -3,8 +3,6 @@ package com.grosner.smartinflater.handlers;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.grosner.smartinflater.utils.MethodNames;
-
 import java.lang.reflect.Method;
 
 /**

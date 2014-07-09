@@ -2,8 +2,6 @@ package com.grosner.smartinflater.handlers;
 
 import android.view.View;
 
-import com.grosner.smartinflater.utils.MethodNames;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -46,8 +44,8 @@ public class OnLongClickHandler extends BaseIdToMethodHandler {
     }
 
     @Override
-    public void handleView(Method method, int methodId, View view) {
-        mMap.put(methodId, method);
+    public void handleView(Method method, View view) {
+        mMap.put(view.getId(), method);
         view.setOnLongClickListener(onLongClickListener);
     }
 

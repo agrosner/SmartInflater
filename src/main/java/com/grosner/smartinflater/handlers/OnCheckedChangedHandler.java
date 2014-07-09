@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 
 import com.grosner.smartinflater.exception.MethodTypeMistmatchException;
-import com.grosner.smartinflater.utils.MethodNames;
 
 import java.lang.reflect.Method;
 
@@ -34,10 +33,10 @@ public class OnCheckedChangedHandler extends BaseIdToMethodHandler {
     }
 
     @Override
-    public void handleView(Method method, int methodId, View view) {
+    public void handleView(Method method, View view) {
         if (view instanceof CompoundButton) {
             ((CompoundButton) view).setOnCheckedChangeListener(onCheckedChangeListener);
-            mMap.put(methodId, method);
+            mMap.put(view.getId(), method);
         } else {
             throw new MethodTypeMistmatchException(view.getClass(), method.getName());
         }

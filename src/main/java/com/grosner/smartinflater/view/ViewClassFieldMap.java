@@ -1,6 +1,7 @@
 package com.grosner.smartinflater.view;
 
 import com.grosner.smartinflater.annotation.SResource;
+import com.grosner.smartinflater.handlers.SGlobalHandlerList;
 import com.grosner.smartinflater.utils.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -46,8 +47,7 @@ public class ViewClassFieldMap {
     static List<Method> getMethodMap(Class inDataObject){
         List<Method> methodList = getSharedMethodInstance().get(inDataObject);
         if(methodList == null){
-            methodList = ReflectionUtils.getAllMethods(new ArrayList<Method>(), inDataObject,"onClick",
-                    "onCheckedChanged","onItemSelected", "onItemClick", "setup");
+            methodList = ReflectionUtils.getAllMethods(new ArrayList<Method>(), inDataObject, SGlobalHandlerList.getMethodPrefixes());
             getSharedMethodInstance().put(inDataObject, methodList);
         }
         return methodList;

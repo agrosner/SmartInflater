@@ -4,8 +4,6 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.grosner.smartinflater.exception.MethodTypeMistmatchException;
-import com.grosner.smartinflater.utils.MethodNames;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -53,7 +51,7 @@ public class OnItemSelectedHandler extends BaseAdapterToMethodHandler implements
     }
 
     @Override
-    public void handleView(Method method, int methodId, View view) {
+    public void handleView(Method method, View view) {
         if(view instanceof AdapterView){
             ((AdapterView) view).setOnItemSelectedListener(onItemSelectedListener);
             mMap.put((AdapterView) view, method);

@@ -2,24 +2,17 @@ package com.grosner.smartinflater.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.CompoundButton;
-import android.widget.Spinner;
 
 import com.grosner.smartinflater.annotation.SMethod;
 import com.grosner.smartinflater.annotation.SResource;
-import com.grosner.smartinflater.exception.MethodTypeMistmatchException;
 import com.grosner.smartinflater.exception.SResourceNotFoundException;
 import com.grosner.smartinflater.handlers.SGlobalHandlerList;
 import com.grosner.smartinflater.handlers.SHandler;
-import com.grosner.smartinflater.utils.MethodNames;
 import com.grosner.smartinflater.utils.ReflectionUtils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,12 +49,14 @@ public class SmartInflater {
         return mContext;
     }
 
-    public static void inflate(Object inObject, int layoutResId){
+    public static View inflate(Object inObject, int layoutResId){
         ViewGroup root = inObject instanceof ViewGroup ? (ViewGroup) inObject : null;
-        View layout = LayoutInflater.from(mContext).inflate(layoutResId, root);
+        View layout = LayoutInflater.from(getContext()).inflate(layoutResId, root);
 
         injectViews(inObject, layout);
         connectMethods(inObject, layout);
+
+        return layout;
     }
 
     static void injectViews(Object inObject, View inLayout){
@@ -105,7 +100,7 @@ public class SmartInflater {
                 if(found!=null){
                     for(SHandler sHandler: handlers){
                         if(method.getName().startsWith(sHandler.getMethodPrefix())){
-                            sHandler.handleView(method, methodId, found);
+                            sHandler.handleView(method, found);
                             break;
                         }
                     }

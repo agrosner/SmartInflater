@@ -5,8 +5,6 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import com.grosner.smartinflater.exception.MethodTypeMistmatchException;
-import com.grosner.smartinflater.utils.MethodNames;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -46,7 +44,7 @@ public class OnItemClickHandler extends BaseAdapterToMethodHandler {
     }
 
     @Override
-    public void handleView(Method method, int methodId, View view) {
+    public void handleView(Method method, View view) {
         if(view instanceof Spinner){
             throw new RuntimeException("Spinners cannot set onItemClick listeners");
         } else if(view instanceof AdapterView){

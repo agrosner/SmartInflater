@@ -17,7 +17,7 @@ public class OnChildClickHandler extends BaseIdToMethodHandler {
     private ExpandableListView.OnChildClickListener onChildClickListener = new ExpandableListView.OnChildClickListener() {
         @Override
         public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-            Method method = mMap.get(v.getId());
+            Method method = mMap.get(parent.getId());
             method.setAccessible(true);
             boolean onGroupClick = false;
             try {
@@ -53,6 +53,6 @@ public class OnChildClickHandler extends BaseIdToMethodHandler {
 
     @Override
     public String getMethodPrefix() {
-        return "onGroupClick";
+        return "onChildClick";
     }
 }

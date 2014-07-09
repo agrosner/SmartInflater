@@ -2,8 +2,6 @@ package com.grosner.smartinflater.handlers;
 
 import android.view.View;
 
-import com.grosner.smartinflater.utils.MethodNames;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -20,7 +18,7 @@ public class OnCreateHandler extends BaseHandler {
     }
 
     @Override
-    public void handleView(Method method, int methodId, View view) {
+    public void handleView(Method method, View view) {
         try {
             method.setAccessible(true);
             method.invoke(inObject, view);
