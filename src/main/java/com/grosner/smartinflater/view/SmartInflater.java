@@ -124,7 +124,7 @@ public class SmartInflater {
                 methodId = s.id();
             } else{
                 methodId = getContext().getResources().getIdentifier(ReflectionUtils.getFieldFromMethod(inObject.getClass(), method.getName(), false,
-                                MethodNames.ONCLICK, MethodNames.ONCHECKEDCHANGED, MethodNames.ONCREATE, MethodNames.ONITEMCLICK, MethodNames.ONITEMSELECTED), "id",
+                                SGlobalHandlerList.getMethodPrefixes()), "id",
                         getContext().getPackageName());
             }
         } catch (Exception ignored){}

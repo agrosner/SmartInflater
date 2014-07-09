@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  * Created by: andrewgrosner
  * Date: 7/8/14.
  * Contributors: {}
- * Description:
+ * Description: Provides a default implementation of {@link android.view.View.OnClickListener}'s handler
  */
 public class OnClickHandler extends BaseIdToMethodHandler {
 
@@ -49,6 +49,6 @@ public class OnClickHandler extends BaseIdToMethodHandler {
 
     @Override
     public String getMethodPrefix() {
-        return MethodNames.ONCLICK;
+        return "onClick";
     }
 }

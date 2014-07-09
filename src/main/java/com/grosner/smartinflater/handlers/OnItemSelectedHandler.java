@@ -64,6 +64,6 @@ public class OnItemSelectedHandler extends BaseAdapterToMethodHandler implements
 
     @Override
     public String getMethodPrefix() {
-        return MethodNames.ONITEMSELECTED;
+        return "onItemSelected";
     }
 }

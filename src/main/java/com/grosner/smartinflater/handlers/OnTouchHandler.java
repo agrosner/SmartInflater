@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
  * Contributors: {}
  * Description:
  */
-public class OnTouchHandler  extends BaseIdToMethodHandler{
+public class OnTouchHandler extends BaseIdToMethodHandler{
 
     View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
@@ -37,13 +37,13 @@ public class OnTouchHandler  extends BaseIdToMethodHandler{
     }
 
     @Override
-    public void handleView(Method method, int methodId, View view) {
-        mMap.put(methodId, method);
+    public void handleView(Method method, View view) {
+        mMap.put(view.getId(), method);
         view.setOnTouchListener(onTouchListener);
     }
 
     @Override
     public String getMethodPrefix() {
-        return MethodNames.ONTOUCH;
+        return "onTouch";
     }
 }

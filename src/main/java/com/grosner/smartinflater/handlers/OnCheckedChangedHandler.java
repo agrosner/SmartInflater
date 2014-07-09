@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * Created by: andrewgrosner
  * Date: 7/8/14.
  * Contributors: {}
- * Description:
+ * Description: Provides a default implementation of {@link android.widget.CompoundButton.OnCheckedChangeListener}'s handler
  */
 public class OnCheckedChangedHandler extends BaseIdToMethodHandler {
 
@@ -45,6 +45,6 @@ public class OnCheckedChangedHandler extends BaseIdToMethodHandler {
 
     @Override
     public String getMethodPrefix() {
-        return MethodNames.ONCHECKEDCHANGED;
+        return "onCheckedChanged";
     }
 }

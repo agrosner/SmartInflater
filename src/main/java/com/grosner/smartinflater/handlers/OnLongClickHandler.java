@@ -53,6 +53,6 @@ public class OnLongClickHandler extends BaseIdToMethodHandler {
 
     @Override
     public String getMethodPrefix() {
-        return MethodNames.ONLONGCLICK;
+        return "onLongClick";
     }
 }

@@ -7,7 +7,7 @@ import java.util.HashMap;
  * Created by: andrewgrosner
  * Date: 7/8/14.
  * Contributors: {}
- * Description:
+ * Description: A simple class that has a map between a view id and method to invoke.
  */
 public abstract class BaseIdToMethodHandler extends BaseHandler implements SHandler{
 

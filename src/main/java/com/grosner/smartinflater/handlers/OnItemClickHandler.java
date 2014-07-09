@@ -59,6 +59,6 @@ public class OnItemClickHandler extends BaseAdapterToMethodHandler {
 
     @Override
     public String getMethodPrefix() {
-        return MethodNames.ONITEMCLICK;
+        return "onItemClick";
     }
 }

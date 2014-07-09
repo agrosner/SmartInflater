@@ -11,7 +11,16 @@ import java.util.ArrayList;
  */
 public class SGlobalHandlerList {
 
+    /**
+     * Class list of handlers we will use to find methods to interpret.
+     */
     private static ArrayList<Class<? extends SHandler>> sHandlers = new ArrayList<>();
+
+    /**
+     * Holds a running list of methods we care about
+     */
+    private static ArrayList<String> sMethodNames;
+    private static boolean needMethodNames = false;
     static {
         sHandlers.add(OnCheckedChangedHandler.class);
         sHandlers.add(OnClickHandler.class);
@@ -20,6 +29,9 @@ public class SGlobalHandlerList {
         sHandlers.add(OnItemSelectedHandler.class);
         sHandlers.add(OnLongClickHandler.class);
         sHandlers.add(OnTouchHandler.class);
+        sHandlers.add(OnChildClickHandler.class);
+        sHandlers.add(OnGroupClickHandler.class);
+        needMethodNames = true;
     }
 
     /**
@@ -29,6 +41,7 @@ public class SGlobalHandlerList {
     public static void addHandler(Class<? extends SHandler> clazz){
         if(!sHandlers.contains(clazz)){
             sHandlers.add(clazz);
+            needMethodNames = true;
         }
     }
 
@@ -39,14 +52,30 @@ public class SGlobalHandlerList {
      */
     public static ArrayList<? extends SHandler> getHandlerInstances(Object inObject){
         ArrayList<SHandler> handlers = new ArrayList<>();
+
+        if(needMethodNames) {
+            sMethodNames = new ArrayList<>();
+        }
         for(Class<? extends SHandler> handler: sHandlers){
             try {
                 SHandler sHandler = handler.getConstructor(Object.class).newInstance(inObject);
                 handlers.add(sHandler);
+                if(needMethodNames) {
+                    sMethodNames.add(sHandler.getMethodPrefix());
+                }
             } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         }
+        needMethodNames = false;
         return handlers;
+    }
+
+    /**
+     * Returns the method prefixes from our handler instances
+     * @return
+     */
+    public static String[] getMethodPrefixes(){
+        return sMethodNames.toArray(new String[sMethodNames.size()]);
     }
 }

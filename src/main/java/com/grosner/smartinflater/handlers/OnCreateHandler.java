@@ -36,6 +36,6 @@ public class OnCreateHandler extends BaseHandler {
 
     @Override
     public String getMethodPrefix() {
-        return MethodNames.ONCREATE;
+        return "onCreate";
     }
 }

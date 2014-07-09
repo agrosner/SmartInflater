@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  */
 public interface SHandler {
 
-    public void handleView(Method method, int methodId, View view);
+    public void handleView(Method method, View view);
 
     public String getMethodPrefix();
 }
