@@ -61,3 +61,110 @@ Supported Properties:
 private TextView my_textview_with_another_name;
 
 ```
+
+### SMethod and SHandlers
+
+*SHandler* is an interface that provides a standard callback for handling view operations. It enables limitless additions to this library by overriding ``` handleView(Method method, View view) ```. A SHandler has a method prefix that SmartInflater uses to associate each Method name you declare in your class to an **SHandler**. Each **SHandler** must have a **unique method prefix**. 
+<br />
+*SMethod* is an annotation that tells SmartInflater we want to associate this method with some SHandler. We do this by taking the method prefix and seeing if the **SGlobalHandlerList** has a SHandler with the method prefix.
+ 
+<br />
+Out-of-the-box-handlers include:
+  1. OnCheckedChangedHandler
+  2. OnChildClickHandler
+  3. OnClickHandler
+  4. OnCreateHandler (called after View is first injected)
+  5. OnGroupClickHandler
+  6. OnItemClickHandler
+  7. OnItemSelectedHandler
+  8. OnLongClickHandler
+  9. OnTouchHandler
+  10. Your own SHandler implementation (more on this later)
+
+
+```java
+//any visibility is allowed
+// parameter must be baser-than-or-equal-to the corresponding XML view
+@SMethod
+private void onClickTitle(TextView title){
+  //do something here
+}
+
+//id() option exits here too!
+@SMethod(id=R.id.title)
+private void onClickSuperLongTitleMethod(TextView title){
+  //do something else here
+}
+
+
+```
+
+#### Custom SHandler example
+
+Say we use the support library's OnRefreshListener a lot. We want to make it available in SmartInflater. How do we do it?
+<br />
+  1. Create class that implements SHandler.
+
+```java
+
+public class OnRefreshHandler extends OnRefreshListener implements SHandler {
+
+  private Method mMethod;
+  
+  //don't worry about calling this. SGlobalHandlerList will take care of it.
+  public OnRefreshHandler(Object inObject){
+    super(inObject);
+  }
+  
+  @Override
+  public void onRefresh(){
+  //invoke our method here
+    try{
+      mMethod.setAccessble(true);
+      mMethod.invoke(inObject);
+    } catch(Exception e){
+      throw new RuntimeException(e);
+    }
+  }
+  
+  @Override
+  public void handleView(Method method, View view){
+    mMethod = method;
+    ((SwipeRefreshLayout)view).setOnRefreshListener(this);
+  }
+  
+  @Override
+  public String getMethodPrefix(){
+    return "onRefresh";
+  }
+
+```
+
+2. Register the SHandler in the SGlobalHandlerList in your Application
+
+```java
+
+public class MyApp extends Application{
+
+  @Override
+  public void onCreate(){
+    super();
+  
+    SGlobalHandlerList.addHandler(OnRefreshHandler.class);
+  }
+
+}
+
+```
+
+
+3. Call the method in your class where you want it!
+
+```java
+
+@SMethod
+public void onRefreshMyRefresh(){
+
+}
+
+```
