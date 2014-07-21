@@ -12,6 +12,7 @@ import com.grosner.smartinflater.handlers.SGlobalHandlerList;
 import com.grosner.smartinflater.handlers.SHandler;
 import com.grosner.smartinflater.utils.ReflectionUtils;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -32,23 +33,35 @@ import java.util.List;
  */
 public class SmartInflater {
 
-    private static Context mContext;
+    /**
+     * Hold it weakly so we prevent serious memory leaks
+     */
+    private static WeakReference<Context> mContext;
 
     /**
-     * Call this at some point within your app before using this library. This should ONLY be the Application Context.
+     * Call this at some point within your app (preferably in the Application class), so you don't have to use a context.
+     * If you require a specific context (for theming) its preferred you pass in the correct context in the onCreate Method
      * @param context
      */
     public static void initialize(Context context){
-        mContext = context;
+        mContext = new WeakReference<>(context);
     }
 
     public static Context getContext(){
-        if(mContext==null){
+        if(mContext==null || mContext.get()==null){
             throw new IllegalStateException("Context not initialized");
+        } else {
+            return mContext.get();
         }
-        return mContext;
     }
 
+    /**
+     * Inflates the layout with the passed layoutResId, fills the inObject {@link com.grosner.smartinflater.annotation.SResource}'s, and
+     * invokes the {@link com.grosner.smartinflater.handlers.SHandler} methods.
+     * @param inObject - the class we want to connect methods to, that have declared {@link com.grosner.smartinflater.annotation.SResource}
+     * @param layoutResId - the resource id of the layout
+     * @return
+     */
     public static View inflate(Object inObject, int layoutResId){
         ViewGroup root = inObject instanceof ViewGroup ? (ViewGroup) inObject : null;
         View layout = LayoutInflater.from(getContext()).inflate(layoutResId, root);
@@ -59,8 +72,15 @@ public class SmartInflater {
         return layout;
     }
 
-    static void injectViews(Object inObject, View inLayout){
-        List<Field> fieldList = ViewClassFieldMap.getFieldMap(inObject);
+    /**
+     * Injects a View layout's children into the corresponding {@link com.grosner.smartinflater.annotation.SResource}'s of the inObject.
+     * By default, this method will throw an exception when the {@link com.grosner.smartinflater.annotation.SResource} could not be found
+     * in the inLayout. This is intentional so that we can eliminate errors and prevent you from not noticing right away.
+     * @param inObject - the class we want to fill with the declared {@link com.grosner.smartinflater.annotation.SResource}
+     * @param inLayout - the layout we have previously inflated
+     */
+    public static void injectViews(Object inObject, View inLayout){
+        List<Field> fieldList = SResourcesMap.getFieldMap(inObject);
 
         for(Field field: fieldList){
             int fieldId;
@@ -85,13 +105,18 @@ public class SmartInflater {
         }
     }
 
-    static void connectMethods(final Object inObject, final View inLayout){
+    /**
+     * Connects methods from the {@link com.grosner.smartinflater.handlers.SGlobalHandlerList} into the inObject using the inLayout
+     * @param inObject - the class we want to connect methods to, that have declared {@link com.grosner.smartinflater.annotation.SResource}
+     * @param inLayout - the layout we have previously inflated
+     */
+    public static void connectMethods(final Object inObject, final View inLayout){
 
         ArrayList<? extends SHandler> handlers = SGlobalHandlerList.getHandlerInstances(inObject);
 
         HashMap<Integer, View> localViewMap = new HashMap<>();
 
-        List<Method> methods = ViewClassFieldMap.getMethodMap(inObject);
+        List<Method> methods = SResourcesMap.getMethodMap(inObject);
         for(Method method: methods){
             int methodId = getMethodId(method, inObject);
             if(methodId!=-1){
@@ -110,6 +135,14 @@ public class SmartInflater {
         }
     }
 
+    /**
+     * Will return the view that the method corresponds to. By default, we take out the method prefix and
+     * lowercase the first letter to see if it corresponds to the name of a field. If the field has an
+     * id declared in the {@link com.grosner.smartinflater.annotation.SMethod} annotation, we search for that one.
+     * @param method
+     * @param inObject
+     * @return
+     */
     private static int getMethodId(Method method, Object inObject){
         int methodId = -1;
 
@@ -127,12 +160,12 @@ public class SmartInflater {
     }
 
     /**
-     * Destroys the views contained in the {@link com.grosner.smartinflater.view.ViewClassFieldMap}
+     * Destroys the views contained in the {@link SResourcesMap}
      * to release grip on the view objects to prevent memory leaks.
      * @param inObject
      */
     public static void destroyViews(Object inObject){
-        List<Field> views = ViewClassFieldMap.getFieldMap(inObject);
+        List<Field> views = SResourcesMap.getFieldMap(inObject);
         for(Field field: views){
             field.setAccessible(true);
             try {

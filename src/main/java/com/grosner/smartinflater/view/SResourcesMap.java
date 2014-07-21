@@ -14,9 +14,12 @@ import java.util.List;
  * Created by: andrewgrosner
  * Date: 7/8/14.
  * Contributors: {}
- * Description:
+ * Description: Holds the corresponding Fields and Methods that correspond to
+ * {@link com.grosner.smartinflater.annotation.SResource}s and
+ * {@link com.grosner.smartinflater.annotation.SMethod}s
  */
-public class ViewClassFieldMap {
+public class SResourcesMap {
+
     private static HashMap<Class, List<Field>> sClassFieldMap;
     private static HashMap<Class, List<Method>> sClassMethodMap;
 
