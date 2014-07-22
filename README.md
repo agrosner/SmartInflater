@@ -1,4 +1,4 @@
-![Image](https://github.com/agrosner/Painter/blob/master/aha_bulb.jpeg?raw=true)
+![Image](https://github.com/agrosner/SmartInflater/blob/master/aha_bulb.jpeg?raw=true)
 
 SmartInflater
 =============
