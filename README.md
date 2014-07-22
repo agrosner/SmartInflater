@@ -20,15 +20,14 @@ Why do we bother with ```findViewById(R.id.someView)``` and the simply set an ``
 ```groovy
 
 dependencies{
-  //locally in the a folder named "Libraries"
+  compile 'com.github.agrosner:smartinflater:1.0.+'
+
+  //or locally in the a folder named "Libraries"
   compile project(':Libraries:SmartInflater');
 }
 
 
 ```
-
-NOTE: MavenCentral coming soon
-
 ### Getting Started
 
 #### Initialize the instance.
