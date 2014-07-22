@@ -22,9 +22,9 @@ public class SGlobalHandlerList {
     private static ArrayList<String> sMethodNames;
     private static boolean needMethodNames = false;
     static {
+        sHandlers.add(OnCreateHandler.class);
         sHandlers.add(OnCheckedChangedHandler.class);
         sHandlers.add(OnClickHandler.class);
-        sHandlers.add(OnCreateHandler.class);
         sHandlers.add(OnItemClickHandler.class);
         sHandlers.add(OnItemSelectedHandler.class);
         sHandlers.add(OnLongClickHandler.class);

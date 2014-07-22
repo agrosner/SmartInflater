@@ -1,7 +1,6 @@
 package com.grosner.smartinflater.handlers;
 
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
 import java.lang.reflect.InvocationTargetException;

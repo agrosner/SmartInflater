@@ -1,7 +1,6 @@
 package com.grosner.smartinflater.utils;
 
 import com.grosner.smartinflater.annotation.SMethod;
-import com.grosner.smartinflater.annotation.SResource;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -13,7 +12,7 @@ import java.util.List;
  * Created by: andrewgrosner
  * Date: 7/8/14.
  * Contributors: {}
- * Description:
+ * Description: Provides some basic methods for retrieving fields and methods
  */
 public class ReflectionUtils {
 
