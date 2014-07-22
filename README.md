@@ -29,6 +29,70 @@ dependencies{
 
 NOTE: MavenCentral coming soon
 
+### Getting Started
+
+#### Initialize the instance.
+
+In an Activity or Application's ``` onCreate() ``` method:
+
+```java
+
+SmartInflater.initialize(this);
+
+```
+
+Note: SmartInflater holds on a **WeakReference** to the Context, so you do not need to worry about memory leaks!
+
+<br />
+
+#### Inflate Your Layout!
+
+In a view:
+
+``` java
+
+public void myInitializationMethod(){
+
+  //note this will automatically attach to root in a ViewGroup class!
+  SmartInflater.inflate(this, R.layout.my_layout);
+
+}
+
+
+```
+
+In your base fragment:
+
+```java
+
+
+ @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if(mLayout==-1){
+            throw new RuntimeException("You must define a layout for: " + getClass().getSimpleName());
+        }
+
+        return SmartInflater.inflate(this, mLayout);
+    }
+
+```
+
+In your activity:
+
+```java 
+
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(SmartInflater.inflate(this, R.layout.activity_my_activity));
+		...
+}
+
+```
+
+It's *that* easy.
+
 ### SResource
 
 *SResource* is an annotation that specifies we want to fill this View with its corresponding XML view when inflated by SmartInflater. By default, these fields are **not** optional, meaning that if at runtime, SmartInflater does not find the view specified by the field, it will throw an exception.
@@ -103,8 +167,11 @@ private void onClickSuperLongTitleMethod(TextView title){
 
 Say we use the support library's OnRefreshListener a lot. We want to make it available in SmartInflater. How do we do it?
 <br />
-  1. Create class that implements SHandler.
+1. Create class that implements SHandler.
+2. Register the SHandler in the SGlobalHandlerList in your Application
+3. Call the method in your class where you want it!
 
+##### 1
 ```java
 
 public class OnRefreshHandler extends OnRefreshListener implements SHandler {
@@ -140,7 +207,7 @@ public class OnRefreshHandler extends OnRefreshListener implements SHandler {
 
 ```
 
-2. Register the SHandler in the SGlobalHandlerList in your Application
+##### 2
 
 ```java
 
@@ -157,8 +224,7 @@ public class MyApp extends Application{
 
 ```
 
-
-3. Call the method in your class where you want it!
+##### 3
 
 ```java
 
