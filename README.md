@@ -167,8 +167,11 @@ private void onClickSuperLongTitleMethod(TextView title){
 
 Say we use the support library's OnRefreshListener a lot. We want to make it available in SmartInflater. How do we do it?
 <br />
-  1. Create class that implements SHandler.
+1. Create class that implements SHandler.
+2. Register the SHandler in the SGlobalHandlerList in your Application
+3. Call the method in your class where you want it!
 
+##### 1
 ```java
 
 public class OnRefreshHandler extends OnRefreshListener implements SHandler {
@@ -204,7 +207,7 @@ public class OnRefreshHandler extends OnRefreshListener implements SHandler {
 
 ```
 
-2. Register the SHandler in the SGlobalHandlerList in your Application
+##### 2
 
 ```java
 
@@ -221,8 +224,7 @@ public class MyApp extends Application{
 
 ```
 
-
-3. Call the method in your class where you want it!
+##### 3
 
 ```java
 
